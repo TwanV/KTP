@@ -1,0 +1,1032 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<knowledge>
+	<title>Pacemaker/ICD/ILR patient advice</title>
+	<description> This system helps a secratary to determine the correct treatment for a calling patient. </description>
+	<goal name="advice">
+        <answer value="Wrong_place">
+        The caller is at the wrong place, this is the pacemaker/icd depature. 
+        If they are still suffering from complaints connect them to someone else
+        </answer>
+        <answer value="False_alarm">
+        In this case the person who said that their alarm went of misheard or misfelt this.
+        In this case they either said that they heard a beep while their icd can only vibrate,
+        or the other way around.
+        </answer>
+		<answer value="Appointment_today_1">
+        The cause might be a frenic nerve stimulation, 
+        where the diaphragm gets stimulated because the CRT might be set too high. 
+        This way it doesnt only stimulate the heart but also the diaphragm.
+        It can be annoying but it is not live threatening.
+        Advice: Make an appointment for today.
+        </answer>
+        <answer value="Appointment_today_2">
+        The cause needs to be investigated...............
+        Advice: Make an appointment for today.
+        Note: They are not allowed to drive!
+        </answer>
+        <answer value="Appointment_today_3">
+        ILR thing
+        </answer>
+        <answer value="Appointment_today_4">
+        ICD gave alarm
+        </answer>
+        <answer value="Appointment_week">
+        Might be a malfunction of the pacemaker or heart rhythm disturbance......
+        Advice: Make an appointment for this week.
+        </answer>
+        <answer value="Appointment_week_2">
+        ILR thing 2
+        </answer>
+        <answer value="Not_directed">
+        The problem that the patient is facing can not be directed
+        towards their pacemaker/ICD. 
+        Advice: Let them make an appointment with their doctor/general practioner,
+                in order to see what the cause could be of the problem.
+        </answer>
+        <answer value="Call_112_1">
+        Had multiple shocks, it might be the case the the ICD is dunfunctioning/ 
+        an adverse heart condition/ too much heart rhythm disturbances, this wont 
+        solve itself.
+        Advice: Call 112 immidately.
+        </answer>
+        <answer value="Call_112_2">
+        Had a shock but still has some complaints. This means that there could be a
+        possiblity of another shock. 
+        Advice: Call 112 immidately.
+        </answer>
+	</goal>
+
+<!-- FINAL ADVISE -->
+
+    <!--  Wrong Place -->
+    <rule>
+        <description> Wrong place </description>
+        <if>
+            <fact name="has_pacemaker_icd">no</fact>
+        </if>
+        <then>
+            <fact name="advice">Wrong_place</fact>
+        </then>
+    </rule>
+
+    <!--  False alarm -->
+    <rule>
+        <description> False alarm </description>
+        <if>
+            <and>
+                <fact name="has_pacemaker_icd">yes</fact>
+                <fact name="has_type">icd</fact>
+                <fact name="has_alarm">yes</fact>
+                <fact name="has_type_alarm">yes</fact>
+                <fact name="has_patient_correct">no</fact>
+            </and>
+        </if>
+        <then>
+            <fact name="advice">False_alarm</fact>
+        </then>
+    </rule>
+
+    <!--  Appointment today 1 -->
+    <rule>
+        <description> Appointment today 1 </description>
+        <if>
+            <or>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock">no</fact>
+                    <fact name="has_shock_feeling">yes</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">pacemaker</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock_feeling">yes</fact>
+                </and>
+            </or>
+        </if>
+        <then>
+            <fact name="advice">Appointment_today_1</fact>
+        </then>
+    </rule>
+
+    <!--  Appointment this week 1 -->
+    <rule>
+        <description> Appointment this week </description>
+        <if>
+            <or>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock">no</fact>
+                    <fact name="has_shock_feeling">no</fact>
+                    <fact name="has_dizzy_palpitations">yes</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">no</fact>
+                    <fact name="has_shock">no</fact>
+                    <fact name="has_dizzy_palpitations">yes</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">pacemaker</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock_feeling">no</fact>
+                    <fact name="has_dizzy_palpitations">yes</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">pacemaker</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">no</fact>
+                    <fact name="has_dizzy_palpitations">yes</fact>
+                </and>
+             </or>
+        </if>
+        <then>
+            <fact name="advice">Appointment_week</fact>
+        </then>
+    </rule>
+
+    <!--  Appointment this week 2 -->
+    <rule>
+        <description> Appointment week 2</description>
+        <if>
+            <and>
+                <fact name="has_type">ilr</fact>
+                <fact name="has_home_monitoring">yes</fact>
+                <fact name="has_alarm">no</fact>
+                <fact name="has_loss_conciousness_or_recorded">recorded_problems</fact>
+            </and>
+        </if>
+        <then>
+            <fact name="advice">Appointment_week_2</fact>
+        </then>
+    </rule>
+
+    <!--  Not directed -->
+    <rule>
+        <description> Not Directed </description>
+        <if>
+            <or>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock">no</fact>
+                    <fact name="has_shock_feeling">no</fact>
+                    <fact name="has_dizzy_palpitations">no</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">no</fact>
+                    <fact name="has_shock">no</fact>
+                    <fact name="has_dizzy_palpitations">no</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">pacemaker</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock_feeling">no</fact>
+                    <fact name="has_dizzy_palpitations">no</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">pacemaker</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">no</fact>
+                    <fact name="has_dizzy_palpitations">no</fact>
+                </and>
+            </or>
+        </if>
+        <then>
+            <fact name="advice">Not_directed</fact>
+        </then>
+    </rule>
+
+    <!--  Appointment today 2 -->
+    <rule>
+        <description> Appointment today 2 </description>
+        <if>
+            <or>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">one</fact>
+                    <fact name="has_one_shock_complaints">no</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">no</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">one</fact>
+                    <fact name="has_one_shock_complaints">no</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_home_monitoring">yes</fact>
+                    <fact name="has_alarm">yes</fact>
+                    <fact name="has_type_alarm">yes</fact>
+                    <fact name="has_patient_correct">yes</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">one</fact>
+                    <fact name="has_one_shock_complaints">no</fact>
+                </and>
+            </or>
+        </if>
+        <then>
+            <fact name="advice">Appointment_today_2</fact>
+        </then>
+    </rule>
+
+    <!--  Appointment today 3 -->
+    <rule>
+        <description> Appointment today 3 </description>
+        <if>
+            <and>
+                <fact name="has_pacemaker_icd">yes</fact>
+                <fact name="has_type">ilr</fact>
+                <fact name="has_home_monitoring">yes</fact>
+                <fact name="has_alarm">no</fact>
+                <fact name="has_loss_conciousness_or_recorded">loss_conciousness</fact>
+            </and>
+        </if>
+        <then>
+            <fact name="advice">Appointment_today_3</fact>
+        </then>
+    </rule>
+
+    <!--  Appointment today 4 -->
+    <rule>
+        <description> Appointment today 4 </description>
+        <if>
+            <and>
+                <fact name="has_pacemaker_icd">yes</fact>
+                <fact name="has_type">icd</fact>
+                <fact name="has_home_monitoring">yes</fact>
+                <fact name="has_alarm">yes</fact>
+                <fact name="has_type_alarm">yes</fact>
+                <fact name="has_patient_correct">yes</fact>
+                <fact name="has_shock">no</fact>
+            </and>
+        </if>
+        <then>
+            <fact name="advice">Appointment_today_4</fact>
+        </then>
+    </rule>
+
+    <!--  Call 112 2 -->
+    <rule>
+        <description> Call 112 2 </description>
+        <if>
+            <or>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">one</fact>
+                    <fact name="has_one_shock_complaints">yes</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">no</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">one</fact>
+                    <fact name="has_one_shock_complaints">yes</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_alarm">yes</fact>
+                    <fact name="has_type_alarm">yes</fact>
+                    <fact name="has_patient_correct">yes</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">one</fact>
+                    <fact name="has_one_shock_complaints">yes</fact>
+                </and>
+            </or>
+        </if>
+        <then>
+            <fact name="advice">Call_112_2</fact>
+        </then>
+    </rule>
+
+    <!--  Call 112 1 -->
+    <rule>
+        <description> Call 112 1 </description>
+        <if>
+            <or>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">yes</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">multiple</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_alarm">no</fact>
+                    <fact name="has_crt">no</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">multiple</fact>
+                </and>
+                <and>
+                    <fact name="has_pacemaker_icd">yes</fact>
+                    <fact name="has_type">icd</fact>
+                    <fact name="has_alarm">yes</fact>
+                    <fact name="has_type_alarm">yes</fact>
+                    <fact name="has_patient_correct">yes</fact>
+                    <fact name="has_shock">yes</fact>
+                    <fact name="has_amount_shock">multiple</fact>
+                </and>
+            </or>
+        </if>
+        <then>
+            <fact name="advice">Call_112_1</fact>
+        </then>
+    </rule>	
+
+<!-- RULES TO DETERMINE ADVICE -->
+
+    <!--  pacemaker/icd Rule -->
+    <rule>
+        <description>has pacemaker/icd</description>
+        <if>
+            <fact name="pacemaker_icd">yes</fact>
+        </if>
+        <then>
+            <fact name="has_pacemaker_icd">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>neg has pacemaker/icd</description>
+        <if>
+            <fact name="pacemaker_icd">no</fact>
+        </if>
+        <then>
+            <fact name="has_pacemaker_icd">no</fact>
+        </then>
+    </rule>
+
+    <!--  icd Rule -->
+
+    <rule>
+        <description>has type</description>
+        <if>
+            <fact name="icd">yes</fact>
+        </if>
+        <then>
+            <fact name="has_type">icd</fact>
+        </then>
+    </rule>
+
+    <!--  pacemaker Rule -->
+    <rule>
+        <description>has pacemaker</description>
+        <if>
+            <fact name="pacemaker">yes</fact>
+        </if>
+        <then>
+            <fact name="has_type">pacemaker</fact>
+            <fact name="has_alarm">no</fact>
+        </then>
+    </rule>
+
+    <!-- ilr Rule -->
+    <rule>
+        <description>has ilr</description>
+        <if>
+            <fact name="ilr">yes</fact>
+        </if>
+        <then>
+            <fact name="has_type">ilr</fact>
+            <fact name="has_alarm">no</fact>
+        </then>
+    </rule>
+
+    <!--  Home monitoring Rule-->
+    <rule>
+        <description>has home monitoring</description>
+        <if>
+            <or>
+                <fact name="home_monitoring">yes</fact>
+                <fact name="home_monitoring">no</fact>
+            </or>
+        </if>
+        <then>
+            <fact name="has_home_monitoring">yes</fact>
+        </then>
+    </rule>
+
+    <!-- alarm Rule -->
+    <rule>
+        <description>has alarm</description>
+        <if>
+            <fact name="alarm">yes</fact>
+        </if>
+        <then>
+            <fact name="has_alarm">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>has alarm</description>
+        <if>
+            <fact name="alarm">no</fact>
+        </if>
+        <then>
+            <fact name="has_alarm">no</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>has type alarm</description>
+        <if>
+            <or>
+                <fact name="type_alarm">beep</fact>
+                <fact name="type_alarm">vibration</fact>
+            </or>
+        </if>
+        <then>
+            <fact name="has_type_alarm">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>has patient correct</description>
+        <if>
+            <fact name="patient_correct">yes</fact>
+        </if>
+        <then>
+            <fact name="has_patient_correct">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>has patient correct</description>
+        <if>
+            <fact name="patient_correct">no</fact>
+        </if>
+        <then>
+            <fact name="has_patient_correct">no</fact>
+        </then>
+    </rule>
+
+    <!--  crt Rule -->
+    <rule>
+        <description>has crt</description>
+        <if>
+            <fact name="crt">yes</fact>
+        </if>
+        <then>
+            <fact name="has_crt">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>neg has crt</description>
+        <if>
+            <fact name="crt">no</fact>
+        </if>
+        <then>
+            <fact name="has_crt">no</fact>
+        </then>
+    </rule>
+
+    <!--  shock Rule -->
+    <rule>
+        <description>has shock</description>
+        <if>
+            <fact name="shock">yes</fact>
+        </if>
+        <then>
+            <fact name="has_shock">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>neg has shock</description>
+        <if>
+            <fact name="shock">no</fact>
+        </if>
+        <then>
+            <fact name="has_shock">no</fact>
+        </then>
+    </rule>
+
+    <!--  shock feeling Rule -->
+    <rule>
+        <description>has shock feeling</description>
+        <if>
+            <fact name="shock_feeling">yes</fact>
+        </if>
+        <then>
+            <fact name="has_shock_feeling">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>neg has shock feeling</description>
+        <if>
+            <fact name="shock_feeling">no</fact>
+        </if>
+        <then>
+            <fact name="has_shock_feeling">no</fact>
+        </then>
+    </rule>
+
+    <!--  amount shock Rule -->
+    <rule>
+        <description>has one amount shock</description>
+        <if>
+            <fact name="amount_shock">one</fact>
+        </if>
+        <then>
+            <fact name="has_amount_shock">one</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>has multiple amount shock</description>
+        <if>
+            <fact name="amount_shock">multiple</fact>
+        </if>
+        <then>
+            <fact name="has_amount_shock">multiple</fact>
+        </then>
+    </rule>
+
+    <!--  complaints Rule -->
+    <rule>
+        <description>has one shock complaints</description>
+        <if>
+            <fact name="one_shock_complaints">yes</fact>
+        </if>
+        <then>
+            <fact name="has_one_shock_complaints">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>neg has one shock complaints</description>
+        <if>
+            <fact name="one_shock_complaints">no</fact>
+        </if>
+        <then>
+            <fact name="has_one_shock_complaints">no</fact>
+        </then>
+    </rule>
+
+    <!--  dizzy Rule -->
+    <rule>
+        <description>has dizzy_palpitations</description>
+        <if>
+            <fact name="dizzy_palpitations">yes</fact>
+        </if>
+        <then>
+            <fact name="has_dizzy_palpitations">yes</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>neg has dizzy_palpitations</description>
+        <if>
+            <fact name="dizzy_palpitations">no</fact>
+        </if>
+        <then>
+            <fact name="has_dizzy_palpitations">no</fact>
+        </then>
+    </rule>
+
+    <!--  Loss conciousness or recorded Rule -->
+    <rule>
+        <description>Loss of conciousness or recorded problems</description>
+        <if>
+            <fact name="loss_conciousness_or_recorded">loss_conciousness</fact>
+        </if>
+        <then>
+            <fact name="has_loss_conciousness_or_recorded">loss_conciousness</fact>
+        </then>
+    </rule>
+
+    <rule>
+        <description>Loss of conciousness or recorded problems</description>
+        <if>
+            <fact name="loss_conciousness_or_recorded">recorded_problems</fact>
+        </if>
+        <then>
+            <fact name="has_loss_conciousness_or_recorded">recorded_problems</fact>
+        </then>
+    </rule>
+
+<!--  QUESTIONS -->
+    <!--  Starting Questions -->
+	<question>
+		<description>Do you have a pacemaker/ICD?</description>
+		<option>
+			<description>Yes</description>
+			<then>
+				<fact name="pacemaker_icd">yes</fact>
+			</then>
+		</option>
+		<option>
+			<description>No</description>
+			<then>
+				<fact name="pacemaker_icd">no</fact>
+			</then>
+		</option>
+	</question>
+
+	<question>
+		<description>Which one of these three types do you have? </description>
+		<option>
+			<description>ICD</description>
+			<then>
+				<fact name="icd">yes</fact>
+                <fact name="pacemaker">no</fact>
+                <fact name="ilr">no</fact>
+			</then>
+		</option>
+		<option>
+			<description>PACEMAKER</description>
+			<then>
+				<fact name="icd">no</fact>
+                <fact name="pacemaker">yes</fact>
+                <fact name="ilr">no</fact>
+			</then>
+		</option>
+        <option>
+			<description>ILR</description>
+			<then>
+				<fact name="icd">no</fact>
+                <fact name="pacemaker">no</fact>
+                <fact name="ilr">yes</fact>
+			</then>
+		</option>
+	</question>
+
+
+    <!--  ICD Questions -->
+    <question>
+		<description>Did you hear/feel an alarm?</description>
+		<option>
+			<description>Yes</description>
+			<then>
+				<fact name="alarm">yes</fact>
+			</then>
+		</option>
+		<option>
+			<description>No</description>
+			<then>
+				<fact name="alarm">no</fact>
+			</then>
+		</option>
+	</question>
+
+        <!--  ICD Alarm questions -->
+        <question>
+            <description>Was it a vibration or a beep?</description>
+            <option>
+                <description>Beep</description>
+                <then>
+                    <fact name="type_alarm">beep</fact>
+                </then>
+            </option>
+            <option>
+                <description>Vibration</description>
+                <then>
+                    <fact name="type_alarm">vibration</fact>
+                </then>
+            </option>
+        </question>
+
+        <question>
+            <description>For secratary, in the case of either a beep or vibration
+                        check the type of the icd to see whether it is actually able to 
+                        produce a beep or a vibration(it is either one not both)
+            </description>
+            <option>
+                <description>Patient is correct</description>
+                <then>
+                    <fact name="patient_correct">yes</fact>
+                </then>
+            </option>
+            <option>
+                <description>Patient is incorrect</description>
+                <then>
+                    <fact name="patient_correct">no</fact>
+                </then>
+            </option>
+        </question>
+
+    <question>
+		<description>Do you have a CRT?</description>
+		<option>
+			<description>Yes</description>
+			<then>
+				<fact name="crt">yes</fact>
+			</then>
+		</option>
+		<option>
+			<description>No</description>
+			<then>
+				<fact name="crt">no</fact>
+			</then>
+		</option>
+	</question>
+
+        <!--  ICD CRT Questions -->
+
+        <question>
+            <description>Did you get a shock?</description>
+            <option>
+                <description>Yes</description>
+                <then>
+                    <fact name="shock">yes</fact>
+                </then>
+            </option>
+            <option>
+                <description>No</description>
+                <then>
+                    <fact name="shock">no</fact>
+                </then>
+            </option>
+        </question>
+
+            <!--  ICD CRT - Yes Shock Questions -->
+            
+            <question>
+                <description>Did you have one or multiple shocks? (Within 24 hours)</description>
+                <option>
+                    <description>One</description>
+                    <then>
+                        <fact name="amount_shock">one</fact>
+                    </then>
+                </option>
+                <option>
+                    <description>Multiple</description>
+                    <then>
+                        <fact name="amount_shock">multiple</fact>
+                    </then>
+                </option>
+            </question>
+            
+                <!--  ICD CRT - Yes one Shock  Questions -->
+
+                <question>
+                    <description>Do you feel better or do you still have complaints?</description>
+                    <option>
+                        <description>I feel better</description>
+                        <then>
+                            <fact name="one_shock_complaints">no</fact>
+                        </then>
+                    </option>
+                    <option>
+                        <description>I still have some complaints</description>
+                        <then>
+                            <fact name="one_shock_complaints">yes</fact>
+                        </then>
+                    </option>
+                </question>
+
+            <!--  ICD CRT - No Shock Questions -->
+            
+            <question>
+                <description>Do you suffer from a shock feeling/shaky belly?</description>
+                <option>
+                    <description>Yes</description>
+                    <then>
+                        <fact name="shock_feeling">yes</fact>
+                    </then>
+                </option>
+                <option>
+                    <description>No</description>
+                    <then>
+                        <fact name="shock_feeling">no</fact>
+                    </then>
+                </option>
+            </question>
+
+                <!--  ICD CRT - No shock feeling Questions -->
+            
+                <question>
+                    <description>Do you suffer from dizzyness/palpitations?</description>
+                    <option>
+                        <description>Yes</description>
+                        <then>
+                            <fact name="dizzy_palpipations">yes</fact>
+                        </then>
+                    </option>
+                    <option>
+                        <description>No</description>
+                        <then>
+                            <fact name="dizzy_palpipations">no</fact>
+                        </then>
+                    </option>
+                </question>
+
+        <!--  ICD No CRT Questions -->
+
+         <question>
+            <description>Did you get a shock?</description>
+            <option>
+                <description>Yes</description>
+                <then>
+                    <fact name="shock">yes</fact>
+                </then>
+            </option>
+            <option>
+                <description>No</description>
+                <then>
+                    <fact name="shock">no</fact>
+                </then>
+            </option>
+        </question>
+
+            <!--  ICD CRT - Yes Shock Questions -->
+            
+            <question>
+                <description>Did you have one or multiple shocks? (Within 24 hours)</description>
+                <option>
+                    <description>One</description>
+                    <then>
+                        <fact name="amount_shock">one</fact>
+                    </then>
+                </option>
+                <option>
+                    <description>Multiple</description>
+                    <then>
+                        <fact name="amount_shock">multiple</fact>
+                    </then>
+                </option>
+            </question>
+            
+                <!--  ICD CRT - Yes one Shock  Questions -->
+
+                <question>
+                    <description>Do you feel better or do you still have complaints?</description>
+                    <option>
+                        <description>I feel better</description>
+                        <then>
+                            <fact name="one_shock_complaints">no</fact>
+                        </then>
+                    </option>
+                    <option>
+                        <description>I still have some complaints</description>
+                        <then>
+                            <fact name="one_shock_complaints">yes</fact>
+                        </then>
+                    </option>
+                </question>
+
+            <!--  ICD No Shock Questions -->
+            <question>
+                <description>Do you suffer from dizzyness/palpitations?</description>
+                <option>
+                    <description>Yes</description>
+                    <then>
+                        <fact name="dizzy_palpitations">yes</fact>
+                    </then>
+                </option>
+                <option>
+                    <description>No</description>
+                    <then>
+                        <fact name="dizzy_palpitations">no</fact>
+                    </then>
+                </option>
+            </question>
+
+
+    <!--  Pacemaker Questions -->
+
+        <!--  Pacemaker CRT Questions -->
+
+        <question>
+            <description>Do you suffer from a shock feeling/shaky belly?</description>
+            <option>
+                <description>Yes</description>
+                <then>
+                    <fact name="shock_feeling">yes</fact>
+                </then>
+            </option>
+            <option>
+                <description>No</description>
+                <then>
+                    <fact name="shock_feeling">no</fact>
+                </then>
+            </option>
+        </question>
+
+             <!--  Pacemaker CRT - No shock feeling Questions -->
+            
+            <question>
+                <description>Do you suffer from dizzyness/palpitations?</description>
+                <option>
+                    <description>Yes</description>
+                    <then>
+                        <fact name="dizzy_palpitations">yes</fact>
+                    </then>
+                </option>
+                <option>
+                    <description>No</description>
+                    <then>
+                        <fact name="dizzy_palpitations">no</fact>
+                    </then>
+                </option>
+            </question>
+
+        <!--  Pacemaker No CRT Questions -->
+
+        <question>
+            <description>Do you suffer from dizzyness/palpitations?</description>
+            <option>
+                <description>Yes</description>
+                <then>
+                    <fact name="dizzy_palpitations">yes</fact>
+                </then>
+            </option>
+            <option>
+                <description>No</description>
+                <then>
+                    <fact name="dizzy_palpitations">no</fact>
+                </then>
+            </option>
+        </question>
+
+    
+    <!--  ILR Questions -->
+
+    <question>
+            <description>Did you lose conciousness or did you record problems yourself?</description>
+            <option>
+                <description>Loss of conciousness</description>
+                <then>
+                    <fact name="loss_conciousness_or_recorded">loss_conciousness</fact>
+                </then>
+            </option>
+            <option>
+                <description>Recorded problems myself</description>
+                <then>
+                    <fact name="loss_conciousness_or_recorded">recorded_problems</fact>
+                </then>
+            </option>
+    </question>
+
+    <!--  Home monitoring -->
+    <question>
+        <description>Do you have home monitoring? If so, let the patient send over the data. 
+                    If not, simple continue
+        </description>
+            <option>
+                <description>Yes</description>
+                <then>
+                    <fact name="home_monitoring">yes</fact>
+                </then>
+            </option>
+            <option>
+                <description>No</description>
+                <then>
+                    <fact name="home_monitoring">no</fact>
+                </then>
+            </option>
+    </question>
+
+</knowledge>
