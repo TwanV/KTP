@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'
 			break;
 
 		case 'run':
-			header('Location: webfrontend.php?kb=' . rawurlencode($file));
+			header('Location: webfrontend.php?kb=' . rawurlencode('Pacemaker_5.xml');
 			break;
 	}
 
