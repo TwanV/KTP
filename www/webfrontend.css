@@ -5,7 +5,7 @@ form {
 }
 
 body {
-	font: 14px/1.6 "Lucida Grande", Lucida, Verdana, sans-serif;
+	font: 14px/1.6 Potta One;
 	margin-top: 3.4em;
 	box-sizing: border-box;
 }
@@ -27,7 +27,7 @@ pre {
 	left: 0;
 	width: 100%;
 	line-height: 2.4em;
-	background: black;
+	background: blue;
 	box-shadow: 0 0 4px #333;
 	z-index: 10;
 }
