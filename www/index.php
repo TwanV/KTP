@@ -8,24 +8,6 @@ date_default_timezone_set('Europe/Amsterdam');
 
 $errors = array();
 
-/*if ($_SERVER['REQUEST_METHOD'] == 'POST'
-	&& isset($_FILES['knowledgebase'])
-	&& $file = process_file($_FILES['knowledgebase'], $errors))
-{
-	switch ($_POST['action'])
-	{
-		case 'analyse':
-			header('Location: analyse.php?kb=' . rawurlencode($file));
-			break;
-
-		case 'run':
-			header('Location: webfrontend.php?kb=' . rawurlencode('Pacemaker_5.xml'));
-			break;
-	}
-
-	exit;
-}*/
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST' 
 	&& $_POST['action'] == 'run')
 {

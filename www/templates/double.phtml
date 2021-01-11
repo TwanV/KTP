@@ -1,67 +1,43 @@
-<!DOCTYPE html>
-<html>
-	<head>
-		<title>Inference engine</title>
-		<link rel="stylesheet" href="webfrontend.css">
-	</head>
-	<body id="kennisbanken">
-		<nav class="site-nav">
-			<!-- what should come here? -->
-		</nav>
-		<header>
-			<h1>Pacemaker</h1>
-			<p>Using </p>
-		</header>
+<?php
 
-		<?php if ($errors): ?>
-		<section class="status-update">
-			<p>The following errors occurred:</p>
-			<ul>
-				<?php foreach ($errors as $error): ?>
-				<li title="<?=$this->attr(sprintf('%s:%d', $error->file, $error->line))?>"><?=$this->html($error->message)?></li>
-				<?php endforeach ?>
-			</ul>
-		</section>
-		<?php endif ?>
+include '../util.php';
+include '../solver.php';
+include '../reader.php';
 
-		<section class="upload-knowledge-base-form">
-			<h2>Click start</h2>
-			<form method="post" enctype="multipart/form-data">
-				<!--<div>
-					<label for="input-knowledgebase">Knowledge base XML file:</label>
-					<input type="file" name="knowledgebase" id="input-knowledgebase">
-				</div>-->
+date_default_timezone_set('Europe/Amsterdam');
 
-				<div class="controls">
-					<button type="submit" name="action" value="run">Start</button>
-					<!--<button type="submit" name="action" value="analyse">Analyse</button> -->
-				</div>
-			</form>
-		</section>
+$errors = array();
 
-		<footer>
-			<p>Source code available on <a href="https://github.com/jelmervdl/kennissysteem">Github</a>.</p>
-		</footer>
+if ($_SERVER['REQUEST_METHOD'] == 'POST' 
+	&& $_POST['action'] == 'run')
+{
+	header('Location: webfrontend.php?kb=' . rawurlencode('Pacemaker_5.xml'));
+	exit;
+}
 
-		<script>
-			Array.prototype.forEach.call(
-				document.querySelectorAll("a[href^='#']"),
-				function(el) {
-					console.log(el);
-					el.addEventListener('click', function() {
-						var hash = el.href.substring(el.href.indexOf('#') + 1);
-						var ref = document.getElementById(hash);
-						
-						Array.prototype.forEach.call(
-							document.querySelectorAll('.highlight'),
-							function(node) {
-								node.classList.remove('highlight')
-							});
-						
-						if (ref)
-							ref.classList.add('highlight');
-					});
-				});
-		</script>
-	</body>
-</html>
+function process_file($file, array &$errors = array())
+{
+	if ($file['error'] != 0)
+		return "Er is een fout opgetreden bij het uploaden.";
+
+	$reader = new KnowledgeBaseReader;
+	$errors = $reader->lint($file['tmp_name']);
+
+	$unique_name = sha1(microtime() . uniqid('kb', true)) . '.xml';
+
+	if (count($errors) > 0)
+		return false;
+
+	if (!move_uploaded_file($file['tmp_name'], '../knowledgebases/' . $unique_name))
+	{
+		$errors[] = "De knowledge-base kon niet worden opgeslagen op de server.";
+		return false;
+	}
+	
+	return $unique_name;
+}
+
+$template = new Template('templates/double.phtml');
+$template->errors = $errors;
+
+echo $template->render();
