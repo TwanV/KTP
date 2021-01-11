@@ -1,43 +1,65 @@
-<?php
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Pacemaker advice</title>
+		<link rel="stylesheet" href="webfrontend.css">
+	</head>
+	<body id="kennisbanken">
+		<nav class="site-nav">
+			<!-- what should come here? -->
+		</nav>
 
-include '../util.php';
-include '../solver.php';
-include '../reader.php';
+		<header>
+			<img src="download.png" width="100" height="100">
+			<h1>Advice for patients with a Pacemaker, ICD, or ILR</h1>
+			<p>Using a series of questions this expert system gives a reccommendation
+				as to how a patient should react to the symptoms and trouble they are
+				having with their implant. To start the survey press the button below.</p>
+		</header>
 
-date_default_timezone_set('Europe/Amsterdam');
 
-$errors = array();
+		<?php if ($errors): ?>
+		<section class="status-update">
+			<p>The following errors occurred:</p>
+			<ul>
+				<?php foreach ($errors as $error): ?>
+				<li title="<?=$this->attr(sprintf('%s:%d', $error->file, $error->line))?>"><?=$this->html($error->message)?></li>
+				<?php endforeach ?>
+			</ul>
+		</section>
+		<?php endif ?>
+		
+		<section class="upload-knowledge-base-form">
+			<form method="post" enctype="multipart/form-data">
+				<div class="controls">
+					<button type="submit" name="action" value="run">Start</button>
+				</div>
+			</form>
+		</section>
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST' 
-	&& $_POST['action'] == 'run')
-{
-	header('Location: webfrontend.php?kb=' . rawurlencode('Pacemaker_5.xml'));
-	exit;
-}
+		<footer>
+			<p>Source code available on <a href="https://github.com/jelmervdl/kennissysteem">Github</a>.</p>
+		</footer>
 
-function process_file($file, array &$errors = array())
-{
-	if ($file['error'] != 0)
-		return "Er is een fout opgetreden bij het uploaden.";
-
-	$reader = new KnowledgeBaseReader;
-	$errors = $reader->lint($file['tmp_name']);
-
-	$unique_name = sha1(microtime() . uniqid('kb', true)) . '.xml';
-
-	if (count($errors) > 0)
-		return false;
-
-	if (!move_uploaded_file($file['tmp_name'], '../knowledgebases/' . $unique_name))
-	{
-		$errors[] = "De knowledge-base kon niet worden opgeslagen op de server.";
-		return false;
-	}
-	
-	return $unique_name;
-}
-
-$template = new Template('templates/double.phtml');
-$template->errors = $errors;
-
-echo $template->render();
+		<script>
+			Array.prototype.forEach.call(
+				document.querySelectorAll("a[href^='#']"),
+				function(el) {
+					console.log(el);
+					el.addEventListener('click', function() {
+						var hash = el.href.substring(el.href.indexOf('#') + 1);
+						var ref = document.getElementById(hash);
+						
+						Array.prototype.forEach.call(
+							document.querySelectorAll('.highlight'),
+							function(node) {
+								node.classList.remove('highlight')
+							});
+						
+						if (ref)
+							ref.classList.add('highlight');
+					});
+				});
+		</script>
+	</body>
+</html>
