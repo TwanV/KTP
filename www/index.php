@@ -11,7 +11,7 @@ $errors = array();
 if ($_SERVER['REQUEST_METHOD'] == 'POST' 
 	&& $_POST['action'] == 'run')
 {
-	header('Location: webfrontend.php?kb=' . rawurlencode('Pacemaker_5.xml'));
+	header('Location: webfrontend.php?kb=' . rawurlencode('Pacemaker_6.xml'));
 	exit;
 }
 
