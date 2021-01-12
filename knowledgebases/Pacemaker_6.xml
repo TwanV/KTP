@@ -4,28 +4,28 @@
 	<description> This system helps a secratary to determine the correct treatment for a calling patient. </description>
 	<goal name="advice">
         <answer value="Wrong_place">
-        The caller is at the wrong place, this is the pacemaker/icd depature. 
-        If they are still suffering from complaints connect them to someone else.  
+        The caller is at the wrong place, this is the pacemaker/icd department. 
+        If they are still suffering from complaints, connect them to the according department.  
         </answer>      
         <answer value="False_alarm">
-        In this case the person who said that their alarm went of misheard or misfelt this.
-        In this case they either said that they heard a beep while their icd can only vibrate,
+        In this case the person who said that their alarm went off might have misheard or misfelt this.
+        They either said that they heard a beep while their icd can only vibrate,
         or the other way around.
         </answer>
 		<answer value="Appointment_today_1">
         The cause might be a frenic nerve stimulation, 
-        could be that (eg) the diaphragm gets stimulated because the CRT might be set too high. 
+        could be that the diaphragm gets stimulated because the CRT might be set too high. 
         It can be annoying but it is not live threatening.
         Advice: Make an appointment for today.
         </answer>
         <answer value="Appointment_today_2">
-        The cause needs to be investigated, (eg) if the shock was correct or not.
+        The cause needs to be investigated, i.e. if the shock was correct or not.
         Advice: Make an appointment for today.
         Note: They are not allowed to drive!
         </answer>
         <answer value="Appointment_today_3">
-        Could be caused by a heart rhythm disorder, 
-        to investigate whether the loss of conciousness had to do with the heart rhythm disorder
+        The symptoms could be caused by a heart rhythm disorder, 
+        it should be investigated whether the loss of conciousness had to do with the heart rhythm disorder.
         Advice: Make an appointment for today
         </answer>
         <answer value="Appointment_today_4">
@@ -33,39 +33,38 @@
         - Battery almost empty EOS(end of service)
         - Device made lead measurements that fall outside the boundaries of the settings of the icd.
           This could point to a broken lead, with the risk of a uncorrect shock.
-          Or loss of pacemaker functioning.
+        - Or loss of pacemaker functioning.
         Advice: Make an appointment for today
         </answer>
         <answer value="Appointment_week">
-        Might be a malfunction of the pacemaker or heart rhythm disturbance.
+        Might be a malfunction of the pacemaker or a heart rhythm disturbance.
         Advice: Make an appointment for this week.
         </answer>
         <answer value="Appointment_week_2">
-        Need to be investigated if the recorded problems show heart rhythm disorder, 
+        It needs to be investigated whether the recorded problems show a heart rhythm disorder 
         which could explain the problems. 
         Advice: Make an appointment for this week.
         </answer>
         <answer value="Not_directed">
-        The problem that the patient is facing can not be directed
+        Based on these questions, the problems that the patient is having do not seem to point
         towards their pacemaker/ICD/ILR. 
         Advice: Let them make an appointment with their doctor/general practioner,
-                in order to see what the cause could be of the problem.
+                in order to see what the cause of the problem could be.
         </answer>
         <answer value="Call_112_1">
-        Had multiple shocks, it might be the case the the ICD is dunfunctioning/ 
-        an adverse heart condition/ too much heart rhythm disturbances, this wont 
+        With multiple shocks it might be the case the the ICD is disfunctioning, the patient might have 
+        an adverse heart condition, or there are too many heart rhythm disturbances, this will not 
         solve itself.
-        Advice: Call 112 immidately.
+        Advice: Call 112 immediately!
         </answer>
         <answer value="Call_112_2">
-        Had a shock but still has some complaints. This means that there could be a
-        possiblity of another shock. 
-        So there is still a possiblity that something is wrong.
-        Advice: Call 112 immidately.
+        A shock did not resolve the patient's complaints. This means that there is the
+        possiblity of another shock and something else being wrong.
+        Advice: Call 112 immediately!
         </answer>
 	</goal>
 
-<!-- FINAL ADVISE -->
+<!-- FINAL ADVIcE -->
 
     <!--  Wrong Place -->
     <rule>
@@ -748,7 +747,7 @@
         </question>
 
         <question>
-            <description>For secratary, in the case of either a beep or vibration
+            <description>For the secratary: in the case of either a beep or vibration
                         check the type of the icd to see whether it is actually able to 
                         produce a beep or a vibration(it is either one not both)
             </description>
@@ -803,7 +802,7 @@
             <!--  ICD CRT - Yes Shock Questions -->
             
             <question>
-                <description>Did you have one or multiple shocks? (Within 24 hours)</description>
+                <description>Did you have one or multiple shocks? (Within the last 24 hours)</description>
                 <option>
                     <description>One</description>
                     <then>
@@ -1021,8 +1020,8 @@
 
     <!--  Home monitoring -->
     <question>
-        <description>Do you have home monitoring? If so, let the patient send over the data. 
-                    If not, simple continue
+        <description>Does the patient have home monitoring? If so, let them send over the data. 
+                    If not, simply continue
         </description>
             <option>
                 <description>Yes</description>
