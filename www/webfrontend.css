@@ -22,7 +22,7 @@ body {
 		padding: 30px;
 	}
 }
-
+<body class="dark-theme || light-theme">
 pre {
 	tab-size: 4;
 }
