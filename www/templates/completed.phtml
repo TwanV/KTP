@@ -15,10 +15,10 @@
 			<?php endif ?>
 	<?php endforeach ?>
 	<?php foreach ($domain->questions as $question): ?>
-		  <dt><?=$state->substitute_variables($question->description, ['Template', 'html'])?></dt>
+		  <dt><?=$state->substitute_variables($question->value, ['Template', 'html'])?></dt>
 			<dd><?php
 				echo $answer
-					? $state->substitute_variables($answer->description, ['Template', 'html'])
+					? $state->substitute_variables($answer->value, ['Template', 'html'])
 					: '<pre>' . $state->facts[0] . '</pre>';
 				?></dd>
 	<?php endforeach ?>
