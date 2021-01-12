@@ -16,6 +16,31 @@ body {
 		font-size: 16px;
 		line-height:1.6;
 		background-color: rgb(252, 248, 223);
+		<select name=”clr” onchange=”document.bgColor=this.options[this.selectedIndex].value” size=”1″>
+    <br>
+    <option value=”black”>black
+        <option value=”orange”>orange
+            <option value=”flamingred”>fuschia
+                <option value=”lightyellow”>light yellow
+                    <option value=”green”>green
+                        <option value=”cyan”>cyan
+                            <option value=”yellow”>yellow
+                                <option value=”red”>red
+                                    <option value=”white”>white</option>
+</select>&nbsp;&nbsp;Background Color
+
+<br>
+<select name=”clr” onchange=”document.fgColor=this.options[this.selectedIndex].value” size=”1″>
+    <br>
+    <option value=”black”>black
+        <option value=”orange”>orange
+            <option value=”flamingred”>fuschia
+                <option value=”lightyellow”>light yellow
+                    <option value=”cyan”>cyan
+                        <option value=”yellow”>yellow
+                            <option value=”red”>red
+                                <option value=”white”>white</option>
+</select>&nbsp;&nbsp;Text Color
 		border: 6px solid rgb(251, 196, 94);
 		text-align: center;
 		max-width: 900px;
