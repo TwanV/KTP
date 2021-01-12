@@ -3,6 +3,11 @@
 <?php $this->begin('content') ?>
 <section class="completed">
 	<h2>Conclusions</h2>
+	
+	<form action="https://google.com">
+   	 	<input type="submit" value="Go to Google" />
+	</form>
+
 	<dl>
 	<?php foreach ($domain->goals as $goal): ?>
 		<?php if ($goal->hasAnswers() && (($answer = $goal->answer($state)) || $state->facts[$goal->name] != STATE_UNDEFINED)): ?>
