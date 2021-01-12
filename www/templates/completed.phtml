@@ -3,10 +3,6 @@
 <?php $this->begin('content') ?>
 <section class="completed">
 	<h2>Conclusions</h2>
-	
-	<form>
-		 <input type="button" onclick="location.href='https://google.com';" value="Go to Google" />
-	</form>
 
 	<dl>
 	<?php foreach ($domain->goals as $goal): ?>
@@ -20,5 +16,10 @@
 			<?php endif ?>
 	<?php endforeach ?>
 	</dl>
+	
+	
+	<form>
+		 <input type="button" onclick="location.href='https://pacemakeradvice.herokuapp.com/index.php';" value="Start over" />
+	</form>
 </section>
 <?php $this->end() ?>
