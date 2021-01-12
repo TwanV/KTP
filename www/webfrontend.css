@@ -395,6 +395,21 @@ body > .page-nav {
 	text-shadow: white 0 1px 0;
 }
 
+.previous-page button {
+	font-size: 1.5em;
+	border: 6px solid silver;
+	background: #eee;
+	margin: auto; /0.2em;/
+	padding: 0.1em 1em;
+	border-radius: 2px;
+	cursor: pointer;
+	color: black;
+	font: inherit;
+	display: block;
+	text-decoration: none;
+	text-shadow: white 0 1px 0;
+}
+
 section.help section {
 	margin: -1em;
 	padding: 1em;
